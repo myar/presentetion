@@ -4,7 +4,7 @@ project for test task and we can write another description.
 
 
 POST -  api/v1/postfile/
-
+--
 keys:
 'file': file.pdf
 
@@ -14,9 +14,8 @@ response:
 
 
 GET -  api/v1/generalinfo/
-
-keys:
 --
+keys:
 
 response:
 200 :
@@ -30,9 +29,8 @@ response:
 
 
 GET -  api/v1/postfile-info/[pk]
-
-keys:
 --
+keys:
 
 response:
 200 :
