@@ -40,8 +40,10 @@ class SimpleTest(TestCase):
         self.assertEqual(u_c, 2)
 
     def test_general(self):
+        # test general, many urls
         self.client.post(self.url, {'file': self.pdf_file})
         url = reverse('general-info')
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
-        self.assertContains(resp, "http://test.com.ua")
+        self.assertContains(resp, '"count_urls": 2')
+        self.assertContains(resp, '"filename": "test.pdf"')

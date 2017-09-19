@@ -3,8 +3,9 @@
 
 from __future__ import unicode_literals
 
-import pdfx
 import re
+import pdfx
+import json
 
 from django.http import HttpResponse, HttpResponseForbidden
 from django.core.files.storage import FileSystemStorage
@@ -12,6 +13,7 @@ from django.views import View
 from django.views.generic import DetailView, ListView
 
 from ..models import FilesStorage, FoundLinks
+from ..serializers import serialize_data
 
 
 URL_PATTERN = ('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|'
@@ -49,8 +51,9 @@ class GetGeneralIngo(ListView):
     model = FilesStorage
 
     def get(self, *args, **kwargs):
-        data = {}
-        return HttpResponse(data)
+        data = [ob.as_json() for ob in FilesStorage.objects.all()]
+        print data
+        return HttpResponse(json.dumps(data), content_type="application/json")
 
 
 class GetFileInfo(DetailView):
@@ -58,4 +61,4 @@ class GetFileInfo(DetailView):
     model = FilesStorage
 
     def get(self, pk):
-        return
+        return pk

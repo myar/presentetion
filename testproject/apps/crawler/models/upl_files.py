@@ -10,6 +10,13 @@ class FilesStorage(models.Model):
     def __unicode__(self):
         return self.filename
 
+    def count_urls(self):
+        return self.urls.all().count()
+
+    def as_json(self):
+        return dict(id=self.id, filename=self.filename,
+                    count_urls=self.count_urls())
+
 
 class FoundLinks(models.Model):
     filename = models.ManyToManyField(FilesStorage, related_name='urls')
