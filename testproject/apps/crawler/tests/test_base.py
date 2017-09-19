@@ -32,7 +32,7 @@ class SimpleTest(TestCase):
     def test_serch_in_pdf(self):
         # Test for seach urs in pdf files
         f_c = FilesStorage.objects.all().count()
-        resp = self.client.post(self.url, {'file': self.pdf_file})
+        self.client.post(self.url, {'file': self.pdf_file})
         self.assertEqual(f_c, 0)
         f_c = FilesStorage.objects.all().count()
         u_c = FoundLinks.objects.all().count()
@@ -47,3 +47,9 @@ class SimpleTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, '"count_urls": 2')
         self.assertContains(resp, '"filename": "test.pdf"')
+        url = reverse('file-info', kwargs={"pk": 1})
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'http://test.com.ua')
+        self.assertContains(resp, 'http://test2.com.ua')
+

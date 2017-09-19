@@ -51,14 +51,18 @@ class GetGeneralIngo(ListView):
     model = FilesStorage
 
     def get(self, *args, **kwargs):
-        data = [ob.as_json() for ob in FilesStorage.objects.all()]
-        print data
+        data = [ob.as_json() for ob in self.get_queryset()]
         return HttpResponse(json.dumps(data), content_type="application/json")
 
 
 class GetFileInfo(DetailView):
 
-    model = FilesStorage
+    model = FoundLinks
 
-    def get(self, pk):
-        return pk
+    def get_queryset(self):
+        return self.model.objects.filter(filename=self.pk)
+
+    def get(self, request, pk, *args, **kwargs):
+        self.pk = pk
+        data = serialize_data(self.get_queryset(), fields=('url'))
+        return HttpResponse(data)
